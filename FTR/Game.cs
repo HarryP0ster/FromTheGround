@@ -195,6 +195,7 @@ namespace FTR
 
         private bool TryToOccupie(int h, int w, Tetromino sigil)
         {
+            SlotsToTake = new int[,] { { 0, 0 }, { 0, 0 }, { 0, 0 }, { 0, 0 } };
             for (int i = 0; i < 4; i++)
             {
                 try

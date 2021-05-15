@@ -162,7 +162,7 @@ namespace FTR
             }
             else if (sprite == ButtonProcceed)
             {
-                if (TetrominosInUse == 0 && (Width * Height)%4 == 0)
+                if (TetrominosInUse == 0 && (Width * Height) % 4 == 0)
                 {
                     Clear();
                     GC.SuppressFinalize(this);
@@ -170,30 +170,20 @@ namespace FTR
                     Window.Refresh();
                     Window.SuspendRender();
                     Generator NewGenerator;
-                    bool Task = false;
-                     while (Task != true) //бесконечный цикл, ну почти
-                     {
-                         NewGenerator = null;
-                         GC.Collect();
-                         NewGenerator = new Generator(Width, Height);
-                         Task = NewGenerator.Generate(); //Проверяет случайное решение на решаемость
-                     }
+                    bool Task;
+                    do //бесконечный цикл, ну почти
+                    {
+                        NewGenerator = new Generator(Width, Height);
+                        GC.Collect();
+                        Task = NewGenerator.Generate(); //Проверяет случайное решение на решаемость
+                    } while (Task != true);
                     Window.ResumeRender();
                 }
-                else if (TetrominosInUse == (Width*Height)/4 && (Width * Height) % 4 == 0)
+                else if ((Width * Height) % 4 == 0)
                 {
-                    Generator NewGenerator = new Generator(Width, Height);
-                    bool Task = NewGenerator.Generate(Quanities); //Проверяет заданное решение на решаемость
-                    if (Task)
-                    {
-                        Clear();
-                        GC.SuppressFinalize(this);
-                        Window.LoadLevel(new Game(Quanities[2], Quanities[5], Quanities[0], Quanities[1], Quanities[4], Quanities[6], Quanities[3], Width, Height, Properties.Resources.DarkForest03));
-                    }
-                    else
-                    {
-                        ButtonProcceed.ChangeImage(FTR.Properties.Resources.GenerateError);
-                    }
+                    Clear();
+                    GC.SuppressFinalize(this);
+                    Window.LoadLevel(new Game(Quanities[2], Quanities[5], Quanities[0], Quanities[1], Quanities[4], Quanities[6], Quanities[3], Width, Height, Properties.Resources.DarkForest03));
                 }
                 else
                 {

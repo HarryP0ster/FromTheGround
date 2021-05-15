@@ -11,14 +11,17 @@ namespace FTR
     {
         private int _shape; //Форма фигуры
         public int[,] Coords = new int[4, 2]; //Координаты ячеек
+        public int[] Neighbours = new int[2];
         private int sin, cos;
         private Vector Offset;
         private Image Icon;
         private Vector[] Offsets;
         private int _rot = 0;
-        private Vector Location = new Vector((int)(-1), (int)(-1));
-        private int[] OccupiedSlots;
         Image[] Previews = new Image[4];
+        private int PossibleRotations = 4;
+        private List<int[,]> AllCoords = new List<int[,]>();
+        private int Row; private int Col;
+
         public int Shape
         {
             get => _shape;
@@ -27,21 +30,13 @@ namespace FTR
                 _shape = value;
             }
         }
+        public int GetMaxRot
+        {
+            get => PossibleRotations;
+        }
         public Image[] GetPreviews
         {
             get => Previews;
-        }
-        public Vector Loc
-        {
-            get => Location;
-            set
-            {
-                Location = value;
-            }
-        }
-        public int[] OcSlots
-        {
-            get => OccupiedSlots;
         }
         public int Sinus
         {
@@ -64,46 +59,63 @@ namespace FTR
             get => _rot;
             set { this._rot = value % 4; BuildRot(); }
         }
+        public List<int[,]> CoordsList
+        {
+            get => AllCoords;
+        }
+        public int RowLength
+        {
+            get => Row;
+        }
+        public int ColLength
+        {
+            get => Col;
+        }
         public Tetromino(int Shape)
         {
             _shape = Shape;
             sin = 0;
             cos = 1;
-            Coords = GetCoords(Shape);
+            GetCoords(Shape);
             Offsets = BuildOffsets(Shape);
             Offset = Offsets[3];
             Icon = GetImage();
             GetSlotsPreviews(Shape);
         }
-        private int[,] GetCoords(int Shape) //Функция строит координаты ячеек фигуры
+        public Tetromino(int Shape, bool simple)
         {
-            int[,] NewCoords;
-            SwitchOccupied();
+            _shape = Shape;
+            sin = 0;
+            cos = 1;
+            GetCoords(Shape, true);
+        }
+        private void GetCoords(int Shape) //Функция строит координаты ячеек фигуры
+        {
             switch (Shape)
             {
                 case 0:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 0, -1 }, { 1, -1 } }; //O
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 0, -1 }, { 1, -1 } }; //O
+                    break;
                 case 1:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { -1, -1 } }; //J
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { -1, -1 } }; //J
+                    break;
                 case 2:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { 1, -1 } }; //L
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { 1, -1 } }; //L
+                    break;
                 case 3:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 0, -1 }, { -1, -1 } }; //S
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 0, -1 }, { -1, -1 } }; //S
+                    break;
                 case 4:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { -1, 0 }, { 0, -1 }, { 1, -1 } }; //Z
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { -1, 0 }, { 0, -1 }, { 1, -1 } }; //Z
+                    break;
                 case 5:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { 0, -2 } }; //I
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, -1 }, { 0, -2 } }; //I
+                    break;
                 case 6:
-                    NewCoords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { -1, 0 } }; //T
-                    return NewCoords;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { -1, 0 } }; //T
+                    break;
             }
-            return NewCoords = new int[4, 2];
+            return;
         }
         public void Rotate(Vector Scale) //Функция поворачивает фигуры
         {
@@ -149,17 +161,17 @@ namespace FTR
         }
         public void Rotate() //Функция поворачивает фигуры, упрощённый вариант для генератора
         {
-            if (cos == 1 && sin == 0)
+            if (cos == 1 && sin == 0 && _rot < GetMaxRot && Shape != 0)
             {
                 cos = 0; sin = 1;
                 _rot++;
             }
-            else if (cos == 0 && sin == 1)
+            else if (cos == 0 && sin == 1 && _rot < GetMaxRot && Shape != 0)
             {
                 cos = -1; sin = 0;
                 _rot++;
             }
-            else if (cos == -1 && sin == 0)
+            else if (cos == -1 && sin == 0 && _rot < GetMaxRot && Shape != 0)
             {
                 cos = 0; sin = -1;
                 _rot++;
@@ -233,118 +245,6 @@ namespace FTR
             return new Vector[0];
         }
 
-        private void SwitchOccupied() //Координаты в упрощенном варианте для генератора
-        {
-            switch (Shape)
-            {
-                case 0: //O
-                    OccupiedSlots = new int[] { 2, 2 };
-                    return;
-                case 1: //J
-                    switch (_rot)
-                    {
-                        case 0:
-                            OccupiedSlots = new int[] { 1, 1, 2 };
-                            break;
-                        case 1:
-                            OccupiedSlots = new int[] { 3, 1 };
-                            break;
-                        case 2:
-                            OccupiedSlots = new int[] { 2, 1, 1 };
-                            break;
-                        case 3:
-                            OccupiedSlots = new int[] { 1, 3 };
-                            break;
-                    }
-                    return;
-                case 2: //L
-                    switch (_rot)
-                    {
-                        case 0:
-                            OccupiedSlots = new int[] { 1, 1, 2 };
-                            break;
-                        case 1:
-                            OccupiedSlots = new int[] { 1, 3 };
-                            break;
-                        case 2:
-                            OccupiedSlots = new int[] { 2, 1, 1 };
-                            break;
-                        case 3:
-                            OccupiedSlots = new int[] { 3, 1 };
-                            break;
-                    }
-                    return;
-                case 3: //S
-                    switch (_rot)
-                    {
-                        case 0:
-                            OccupiedSlots = new int[] { 2, 2 };
-                            break;
-                        case 1:
-                            OccupiedSlots = new int[] { 1, 2, 1 };
-                            break;
-                        case 2:
-                            OccupiedSlots = new int[] { 2, 2 };
-                            break;
-                        case 3:
-                            OccupiedSlots = new int[] { 1, 2, 1 };
-                            break;
-                    }
-                    return;
-                case 4: //Z
-                    switch (_rot)
-                    {
-                        case 0:
-                            OccupiedSlots = new int[] { 2, 2 };
-                            break;
-                        case 1:
-                            OccupiedSlots = new int[] { 1, 2, 1 };
-                            break;
-                        case 2:
-                            OccupiedSlots = new int[] { 2, 2 };
-                            break;
-                        case 3:
-                            OccupiedSlots = new int[] { 1, 2, 1 };
-                            break;
-                    }
-                    return;
-                case 5: //I
-                    switch (_rot)
-                    {
-                        case 0:
-                            OccupiedSlots = new int[] { 1, 1, 1, 1 };
-                            break;
-                        case 1:
-                            OccupiedSlots = new int[] { 4 };
-                            break;
-                        case 2:
-                            OccupiedSlots = new int[] { 1, 1, 1, 1 };
-                            break;
-                        case 3:
-                            OccupiedSlots = new int[] { 4 };
-                            break;
-                    }
-                    return;
-                case 6: //T
-                    switch (_rot)
-                    {
-                        case 0:
-                            OccupiedSlots = new int[] { 1, 3 };
-                            break;
-                        case 1:
-                            OccupiedSlots = new int[] { 1, 2, 1 };
-                            break;
-                        case 2:
-                            OccupiedSlots = new int[] { 3, 1 };
-                            break;
-                        case 3:
-                            OccupiedSlots = new int[] { 1, 2, 1 };
-                            break;
-                    }
-                    return;
-            }
-        }
-
         public void GetSlotsPreviews(int Shape)
         {
             switch (Shape)
@@ -392,6 +292,174 @@ namespace FTR
                     Previews[3] = FTR.Properties.Resources.SlotClosedLeft;
                     break;
             }
+        }
+        private void SwitchOccupied() //Координаты в упрощенном варианте для генератора
+        {
+            switch (Shape)
+            {
+                case 0: //O
+                    Row = 1;
+                    Col = 1;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } }; //O
+                    return;
+                case 1: //J
+                    switch (_rot)
+                    {
+                        case 0:
+                            Row = 2;
+                            Col = 1;
+                            break;
+                        case 1:
+                            Row = 1;
+                            Col = 2;
+                            break;
+                        case 2:
+                            Row = 2;
+                            Col = 1;
+                            break;
+                        case 3:
+                            Row = 1;
+                            Col = 2;
+                            break;
+                    }
+                    return;
+                case 2: //L
+                    switch (_rot)
+                    {
+                        case 0:
+                            Row = 1;
+                            Col = 2;
+                            break;
+                        case 1:
+                            Row = 2;
+                            Col = 1;
+                            break;
+                        case 2:
+                            Row = 1;
+                            Col = 2;
+                            break;
+                        case 3:
+                            Row = 2;
+                            Col = 1;
+                            break;
+                    }
+                    return;
+                case 3: //S
+                    switch (_rot)
+                    {
+                        case 0:
+                            Row = 1;
+                            Col = 2;
+                            break;
+                        case 1:
+                            Row = 2;
+                            Col = 1;
+                            break;
+                    }
+                    return;
+                case 4: //Z
+                    switch (_rot)
+                    {
+                        case 0:
+                            Row = 2;
+                            Col = 1;
+                            break;
+                        case 1:
+                            Row = 1;
+                            Col = 2;
+                            break;
+                    }
+                    return;
+                case 5: //I
+                    switch (_rot)
+                    {
+                        case 0:
+                            Row = 3;
+                            Col = 0;
+                            break;
+                        case 1:
+                            Row = 0;
+                            Col = 3;
+                            break;
+                    }
+                    return;
+                case 6: //T
+                    switch (_rot)
+                    {
+                        case 0:
+                            Row = 1;
+                            Col = 1;
+                            break;
+                        case 1:
+                            Row = 1;
+                            Col = 1;
+                            break;
+                        case 2:
+                            Row = 1;
+                            Col = 1;
+                            break;
+                        case 3:
+                            Row = 1;
+                            Col = 1;
+                            break;
+                    }
+                    return;
+            }
+        }
+        private void GetCoords(int Shape, bool Simple) //Функция строит координаты ячеек фигуры
+        {
+            switch (Shape)
+            {
+                case 0:
+                    PossibleRotations = 1;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } }; //O
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 1, 1 } });
+                    break;
+                case 1:
+                    PossibleRotations = 4;
+                    Coords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 1, 2 } }; //J
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 1, 2 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 0 }, { 2, 0 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 2 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 1 }, { 1, 1 }, { 2, 1 }, { 2, 0 } });
+                    break;
+                case 2:
+                    PossibleRotations = 4;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 } }; //L
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 1, 0 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 2, 1 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 2 }, { 1, 0 }, { 1, 1 }, { 1, 2 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 2, 1 } });
+                    break;
+                case 3:
+                    PossibleRotations = 2;
+                    Coords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 2, 1 } }; //S
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 2, 1 } });
+                    AllCoords.Add(new int[4, 2] { { 1, 0 }, { 1, 1 }, { 0, 1 }, { 0, 2 } });
+                    break;
+                case 4:
+                    PossibleRotations = 2;
+                    Coords = new int[4, 2] { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 2, 0 } }; //Z
+                    AllCoords.Add(new int[4, 2] { { 0, 1 }, { 1, 1 }, { 1, 0 }, { 2, 0 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 1, 2 } });
+                    break;
+                case 5:
+                    PossibleRotations = 2;
+                    Coords = new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } }; //I
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 0, 2 }, { 0, 3 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 1, 0 }, { 2, 0 }, { 3, 0 } });
+                    break;
+                case 6:
+                    PossibleRotations = 4;
+                    Coords = new int[4, 2] { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 2, 0 } }; //T
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 1, 0 }, { 1, 1 }, { 2, 0 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 1 }, { 1, 0 }, { 1, 1 }, { 1, 2 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 1 }, { 1, 0 }, { 1, 1 }, { 2, 1 } });
+                    AllCoords.Add(new int[4, 2] { { 0, 0 }, { 0, 1 }, { 1, 1 }, { 0, 2 } });
+                    break;
+            }
+            SwitchOccupied();
+            return;
         }
     }
 }
