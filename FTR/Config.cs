@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -17,7 +16,7 @@ namespace FTR
         public override void LoadAssets()
         {
             MakeStars();
-            global.form_menu.ChangeAmbient(Properties.Resources.Rain);
+            global.form_menu.ChangeAmbient(Properties.Resources.GiveUp, false);
             BackgroundImg = FTR.Properties.Resources.room;
             BText = global.ScaleImage(FTR.Properties.Resources.BackToMenuText);
             ButtonBack = new Sprite(new Vector((global.form_menu.Map.Width / 10) - BText.Size.Width / 2, global.form_menu.Map.Height - BText.Size.Height), new Vector(1, 1), BText, "ButtonLevel"); AllSprites.Add(ButtonBack);
@@ -96,7 +95,7 @@ namespace FTR
             if (sprite == ButtonBack)
             {
                 Clear();
-                global.form_menu.ChangeAmbient(Properties.Resources.Cloud_Rome_Ground);
+                global.form_menu.ChangeAmbient(Properties.Resources.Cloud_Rome_Ground, true);
                 GC.SuppressFinalize(this);
                 Window.LoadLevel(new Menu());
             }

@@ -178,6 +178,9 @@
   <data name="Generator_HUD" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Generator_HUD.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GiveUp" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\GiveUp.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
   <data name="HUD_10" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\HUD_10.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -371,15 +374,6 @@
   </data>
   <data name="Quanity9" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Quanity9.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Rain" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Rain.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="RandomOff" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RandomOff.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="RandomOn" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\RandomOn.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Retry" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Retry.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

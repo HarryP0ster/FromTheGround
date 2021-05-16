@@ -260,6 +260,15 @@ namespace FTR.Properties {
         }
         
         /// <summary>
+        ///   Поиск локализованного ресурса типа System.IO.UnmanagedMemoryStream, аналогичного System.IO.MemoryStream.
+        /// </summary>
+        internal static System.IO.UnmanagedMemoryStream GiveUp {
+            get {
+                return ResourceManager.GetStream("GiveUp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap HUD_10 {
@@ -655,35 +664,6 @@ namespace FTR.Properties {
         internal static System.Drawing.Bitmap Quanity9 {
             get {
                 object obj = ResourceManager.GetObject("Quanity9", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.IO.UnmanagedMemoryStream, аналогичного System.IO.MemoryStream.
-        /// </summary>
-        internal static System.IO.UnmanagedMemoryStream Rain {
-            get {
-                return ResourceManager.GetStream("Rain", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap RandomOff {
-            get {
-                object obj = ResourceManager.GetObject("RandomOff", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Поиск локализованного ресурса типа System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap RandomOn {
-            get {
-                object obj = ResourceManager.GetObject("RandomOn", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

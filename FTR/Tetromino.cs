@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Drawing;
 
 namespace FTR
@@ -11,7 +7,6 @@ namespace FTR
     {
         private int _shape; //Форма фигуры
         public int[,] Coords = new int[4, 2]; //Координаты ячеек
-        public int[] Neighbours = new int[2];
         private int sin, cos;
         private Vector Offset;
         private Image Icon;
@@ -158,30 +153,6 @@ namespace FTR
                     Previews[i].RotateFlip(RotateFlipType.Rotate270FlipNone);
                 _rot = 0;
             }
-        }
-        public void Rotate() //Функция поворачивает фигуры, упрощённый вариант для генератора
-        {
-            if (cos == 1 && sin == 0 && _rot < GetMaxRot && Shape != 0)
-            {
-                cos = 0; sin = 1;
-                _rot++;
-            }
-            else if (cos == 0 && sin == 1 && _rot < GetMaxRot && Shape != 0)
-            {
-                cos = -1; sin = 0;
-                _rot++;
-            }
-            else if (cos == -1 && sin == 0 && _rot < GetMaxRot && Shape != 0)
-            {
-                cos = 0; sin = -1;
-                _rot++;
-            }
-            else
-            {
-                cos = 1; sin = 0;
-                _rot = 0;
-            }
-            SwitchOccupied();
         }
         private void BuildRot() //Конвертирует поворот в синус и косинус
         {

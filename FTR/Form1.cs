@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using System.ComponentModel;
 using System.Windows.Forms;
 using System.Threading;
 using System.Media;
 using System.Runtime.InteropServices;
-using System.Text;
 
 
 namespace FTR
@@ -249,11 +247,14 @@ namespace FTR
         {
             Backup = CurrentLevel;
         }
-        public void ChangeAmbient(System.IO.UnmanagedMemoryStream File) //Смена звука, но зачем?
+        public void ChangeAmbient(System.IO.UnmanagedMemoryStream File, bool Loop) //Смена звука, но зачем?
         {
             Ambience.Dispose();
             Ambience = new SoundPlayer(File);
-            Ambience.PlayLooping();
+            if (Loop)
+                Ambience.PlayLooping();
+            else
+                Ambience.Play();
             GC.Collect();
         }
     }

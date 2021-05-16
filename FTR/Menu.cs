@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -28,7 +27,7 @@ namespace FTR
             Settings = new Sprite(new Vector(1, 1), new Vector(1, 1), global.ScaleImage(FTR.Properties.Resources.Settings), "ButtonSettings"); AllSprites.Add(Settings);
             Buttons.Add(ButtonLevel); Buttons.Add(ButtonCredits); Buttons.Add(ButtonExit); Buttons.Add(Settings); Buttons.Add(Moon);
         }
-        public override void UpdateButtons(Form Window)
+        public override void UpdateButtons(Form Window) 
         {
             if (Buttons.Count() != 0)
             {

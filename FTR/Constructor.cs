@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -179,7 +178,7 @@ namespace FTR
                     } while (Task != true);
                     Window.ResumeRender();
                 }
-                else if ((Width * Height) % 4 == 0)
+                else if ((Width * Height) % 4 == 0 && TetrominosInUse >= (Width * Height) / 4)
                 {
                     Clear();
                     GC.SuppressFinalize(this);

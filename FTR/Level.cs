@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
 using System.Drawing;
 
@@ -16,7 +13,7 @@ namespace FTR
 
         public static Image BackgroundImg; //Задник
         public abstract void LoadAssets(); //Отвечает за загрузку всего нужного в уровень
-        public abstract void UpdateButtons(Form Window); //Меняет положение кнопок при смене размера окна, хотя оно и нужно и только в меню
+        public abstract void UpdateButtons(Form Window); //Меняет положение кнопок при смене размера окна, хотя оно и нужно и только в меню, раньше планировалось изменение размеров экрана откуда угодно
         public abstract void CheckMouse(Form1 Window, Sprite Mouse); //Где сейчас курсор
         public abstract void MakeBackground(Graphics g); //Добавляет звезды
         public abstract void StarsState(); //Обновляет звезды, создает мерцание
