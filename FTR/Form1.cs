@@ -69,7 +69,7 @@ namespace FTR
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            AllocConsole(); //Консоль для дебагинга
+            //AllocConsole(); //Консоль для дебагинга
             ChangeVolume(0);
             Ambience = new SoundPlayer(FTR.Properties.Resources.Cloud_Rome_Ground);
             Ambience.PlayLooping();

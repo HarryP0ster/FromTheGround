@@ -120,7 +120,7 @@ namespace FTR
                                 Slots[Point1[0], Point1[1]] = 0;
                                 Slots[Point2[0], Point2[1]] = 0;
                                 Slots[Point3[0], Point3[1]] = 0;
-                                Slots[Point4[0], Point4[1]] = 0;
+                                Slots[Point4[0], Point4[1]] = 0;    
                             }
                         }
                         catch

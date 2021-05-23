@@ -54,7 +54,7 @@ namespace FTR
         public override void LoadAssets()
         {
             float Scale = 1; float Position = (float)8/SHeight;
-            if (((float)SWidth / (float)SHeight) >= 2) Scale = 0.75f;
+            if (((float)SWidth / (float)SHeight) >= 2) Scale = 0.9f;
             else Scale = (float)(1 - (0.025 * Math.Pow(SHeight, 2) / Math.Pow(Math.Log(1.8 * SHeight), 1.95)));
             SlotsScale = new Vector(Scale, Scale);
             Moon = new Sprite(new Vector(global.ScreenScale.X * (1.1f * MoonCoords.X + 800), global.ScreenScale.Y * (float)((Math.Pow(MoonCoords.X, 2)) / 6000) - 25f), new Vector(0.8f, 0.8f), global.ScaleImage(FTR.Properties.Resources.Moon), "Moon"); AllSprites.Add(Moon);

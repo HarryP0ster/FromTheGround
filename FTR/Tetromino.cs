@@ -377,7 +377,7 @@ namespace FTR
                     return;
             }
         }
-        private void GetCoords(int Shape, bool Simple) //Функция строит координаты ячеек фигуры
+        private void GetCoords(int Shape, bool Simple) //Функция строит координаты ячеек фигуры для генератора
         {
             switch (Shape)
             {
